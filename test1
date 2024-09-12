@@ -1,0 +1,69 @@
+#!/bin/bash
+
+GITHUB_TOKEN="YOUR_GITHUB_TOKEN"  # Replace with your GitHub token
+ORG="your_organization"           # Replace with the organization name
+DAYS=30                           # Number of days to look back for commits
+START_DATE=$(date -d "-${DAYS} days" "+%Y-%m-%dT%H:%M:%SZ")
+CSV_FILE="commit_data.csv"         # Output CSV file
+
+# Write CSV header
+echo "Repository,Commits_Last_30_Days" > $CSV_FILE
+
+# Function to get the total number of commits in the last 30 days for a repo
+get_commit_count() {
+    local repo=$1
+    local page=1
+    local total_commits=0
+
+    while true; do
+        # GitHub API request for commits in the last 30 days
+        response=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/repos/${ORG}/${repo}/commits?since=$START_DATE&per_page=100&page=$page")
+
+        # Count commits on this page
+        commit_count=$(echo "$response" | jq length)
+
+        if [ "$commit_count" -eq 0 ]; then
+            break
+        fi
+
+        # Add the commit count from this page to the total
+        total_commits=$((total_commits + commit_count))
+        page=$((page + 1))
+    done
+
+    echo "$total_commits"
+}
+
+# Get the list of repositories in the organization
+get_repositories() {
+    local page=1
+
+    while true; do
+        # GitHub API request for repositories in the organization
+        repos=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+            "https://api.github.com/orgs/${ORG}/repos?per_page=100&page=$page")
+
+        # Break if no repositories are found
+        repo_count=$(echo "$repos" | jq length)
+        if [ "$repo_count" -eq 0 ]; then
+            break
+        fi
+
+        # Loop through repositories and get commit counts
+        for repo in $(echo "$repos" | jq -r '.[].name'); do
+            commit_count=$(get_commit_count "$repo")
+            echo "Processing $repo: $commit_count commits in last $DAYS days"
+            
+            # Write the data to CSV
+            echo "$repo,$commit_count" >> $CSV_FILE
+        done
+
+        page=$((page + 1))
+    done
+}
+
+# Run the function to get repositories and commit counts
+get_repositories
+
+echo "Commit data saved to $CSV_FILE"
