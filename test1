@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Variables
 GITHUB_TOKEN="YOUR_GITHUB_TOKEN"  # Replace with your GitHub token
 ORG="your_organization"           # Replace with the organization name
 DAYS=30                           # Number of days to look back for commits
