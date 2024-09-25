@@ -1,0 +1,17 @@
+{
+  "project": "YOUR_JIRA_PROJECT_KEY",
+  "summary": "Dependabot Alert: [{{repository}}] Vulnerability in {{package_name}}",
+  "description": "Dependabot detected a vulnerability in **{{package_name}}** in the repository **{{repository}}**.\n\n- **Affected Package:** {{package_name}}\n- **Vulnerable Version:** {{vulnerable_version}}\n- **Severity:** {{severity}}\n- **Advisory Link:** {{advisory_url}}\n\n### Suggested Upgrade:\n- **Fixed in Version:** {{safe_version}}\n\nThis alert was triggered by Dependabot in the GitHub repository.",
+  "issuetype": {
+    "name": "Bug"
+  },
+  "priority": {
+    "name": "{{priority}}"  // Map severity to priority (e.g., High, Medium, Low)
+  },
+  "labels": [
+    "dependabot",
+    "security"
+  ],
+  "customfield_12345": "{{repository}}", // Add any custom Jira fields here
+  "customfield_67890": "{{package_name}}" // Example custom field for package name
+}
