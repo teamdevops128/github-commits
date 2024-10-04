@@ -1,20 +1,8 @@
-Log into GitHub Enterprise:
+Step 3: Assign Users and Groups in Azure AD
+Assign Users/Groups to GitHub Enterprise Application:
 
-As an admin, go to GitHub Enterprise Settings for your organization.
-Enable SAML SSO:
+In the Azure Portal, go to the Users and Groups section of the GitHub Enterprise application.
+Click Add User/Group and select the users or groups who need access to GitHub Enterprise via SSO.
+Verify Access:
 
-Navigate to Settings > Organization security > Single sign-on.
-Click Configure SAML SSO.
-Upload the Federation Metadata XML:
-
-Upload the Federation Metadata XML that you downloaded from Azure AD in the previous step.
-Configure Required Information:
-
-Ensure the following fields are correctly filled out (these should match the SAML configuration from Azure AD):
-SSO URL: This is the Azure AD Login URL.
-Entity ID: https://github.com.
-SAML certificate: The certificate from Azure AD.
-Test and Save:
-
-Test the SSO setup by clicking Test SSO in GitHub to ensure everything works as expected.
-Once tested, click Save to finalize the configuration.
+Each assigned user should now be able to log into GitHub Enterprise using their Azure AD credentials.
