@@ -1,21 +1,20 @@
-go to Azure Portal and sign in with your Azure admin account.
-Create a new Enterprise Application:
+Log into GitHub Enterprise:
 
-Navigate to Azure Active Directory > Enterprise Applications.
-Click New application and search for "GitHub".
-Choose GitHub from the gallery and create it.
-Configure Single Sign-On (SSO):
+As an admin, go to GitHub Enterprise Settings for your organization.
+Enable SAML SSO:
 
-After the GitHub application is created, navigate to the Single sign-on tab.
-Select SAML as the sign-on method.
-SAML Configuration:
+Navigate to Settings > Organization security > Single sign-on.
+Click Configure SAML SSO.
+Upload the Federation Metadata XML:
 
-You will need to provide several pieces of information, such as:
-Identifier (Entity ID): Set this to https://github.com.
-Reply URL (Assertion Consumer Service URL): Set this to https://github.com/orgs/<your-org>/sso/callback. Replace <your-org> with your GitHub organization name.
-User Attributes & Claims: Set the following claims:
-Name Identifier: user.mail or user.principalname (ensure this aligns with GitHub usernames).
-Add a claim for User.Email if not already configured.
-Download SAML Signing Certificate:
+Upload the Federation Metadata XML that you downloaded from Azure AD in the previous step.
+Configure Required Information:
 
-In the SAML Signing Certificate section, download the Federation Metadata XML. You’ll need this to configure GitHub.
+Ensure the following fields are correctly filled out (these should match the SAML configuration from Azure AD):
+SSO URL: This is the Azure AD Login URL.
+Entity ID: https://github.com.
+SAML certificate: The certificate from Azure AD.
+Test and Save:
+
+Test the SSO setup by clicking Test SSO in GitHub to ensure everything works as expected.
+Once tested, click Save to finalize the configuration.
